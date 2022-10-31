@@ -13,14 +13,14 @@ Like in other fields, the 20/80 rule applies in refactoring as well. Just in cas
 
 There are quite a few code smells in the implementation, although they are relatively trivial, and you may skip them in only a few lines of code cases. But note that the purpose is to demonstrate these code smells' names and how to identify them in your code.
 
-![](resources/images/code-smell.png)
+![Common Code Smells](images/code-smell.png)
 
 
 ## Common Refactorings
 
 Correspondingly, there are refactorings to fix these code smells and turns the code easier to understand and thus to be modified. If you don't have to touch the code again to add new features or fix defects in it, keeping it as is a better idea.
 
-![](resources/images/refactorings.png)
+![Corresponding Refactorings](images/refactorings.png)
 
 Note that the purpose of this tutorial is not implementing the function of the feature `rot13`. But mainly to focus on how we can use IDE shortcuts to help us do these common refactorings effectively. Once you have learnt the shortcuts and know when to use them, I guarantee you that your productivity will increase ten times.
 
@@ -30,11 +30,11 @@ We all know that coding is not about typing but thinking. But you can only have 
 
 ROT13, or "rotate by 13 places", is a simple letter substitution cipher that replaces a letter with the 13th letter after it in the alphabet. So `A` becomes `N`, `B` to `O` and so on till `M` to `Z`. And then it looks backward, so `N` becomes `A` and `O` becomes `B` and so on.
 
-![](resources/images/rot-13.png)
+![ROT13 Algorithm](images/rot-13.png)
 
 So `HELLO` becomes `URYYB` after rotation.
 
-![](resources/images/rot-hello.png)
+![HELLO to URYYB](images/rot-hello.png)
 
 In this tutorial, we'll focus on the implementation of `ROT13` and try to apply different refactorings (with WebStorm shortcuts for demonstration).
 
@@ -42,7 +42,7 @@ In this tutorial, we'll focus on the implementation of `ROT13` and try to apply 
 
 So we have already got an implementation here, it could be better, but it works and can make all the tests pass.
 
-![](resources/images/01.png)
+![The Initial Implementation](images/01.png)
 
 Where the corresponding tests are:
 
@@ -73,7 +73,7 @@ describe("ROT13", () => {
 });
 ```
 
-![](resources/images/tests-for-rot13.png)
+![Unit Tests Are All Passing](images/tests-for-rot13.png)
 
 
 And in the following sections, we'll walk through the above implementation and try to apply some most used refactorings with WebStorm shortcuts to convert the code to a maintainable state.
@@ -87,7 +87,7 @@ Just thinking that *Philosopher's Stone* is between *UNIX Network Programming* a
 
 Just slide the code up and down by pressing `command + shift + up/down` in WebStorm. You can select multiple lines, a block (a `for` for example) or even a function and then slide them up and down. 
 
-![](resources/images/02.png)
+![Slide Statement](images/02.png)
 
 ### Extract Constant
 
@@ -97,7 +97,7 @@ For the code snippet below, the empty string can be extracted as a variable name
 
 Press `command + option + v` in WebStorm will do the work:
 
-![](resources/images/03.png)
+![Extract Constant](images/03.png)
 
 Nothing fancy at all. One important aspect of clean code is it should not raise any surprise to their reader. It should be plain and straightforward.
 
@@ -111,7 +111,7 @@ For example, the anonymous function inside the map can be extracted into a separ
 
 The shortcut for the Extract Function is `command + option + M` (M for method in Object-Orient Language)
 
-![](resources/images/04.png)
+![Extract Function](images/04.png)
 
 ### Rename Parameter
 
@@ -119,14 +119,13 @@ Renaming a function's parameter is equally as important as renaming a variable i
 
 Press `command + option + p` can start the renaming process in WebStorm. A tiny popup will show up, and once you have done the editing, hit Enter to finalise it, and all the references will be updated automatically.
 
-![](resources/images/05.png)
-
+![Rename Parameter](images/05.png)
 
 ### Rename Variable
 
 The same thing applies to variables as well. There are many times I couldn’t think of a good name, so I would use a pretty general one, like x or segment, as a placeholder, and once I made the change and got a better idea of what the variable is holding, I would change the variable name.
 
-![](resources/images/06.png)
+![Rename Variable](images/06.png)
 
 The old variable `letters` is a bit unclean, so I renamed it to `dict` by pressing `shift + F6`. It's a generic renaming shortcut that can also be used for renaming a function.
 
@@ -136,7 +135,7 @@ And since there are quite a few lines in the function `transform`, we can apply 
 
 Press `command + option + m` again to extract a new function here called `getLetterWithOffset`. That way, we simplified the `transform` a bit. Note the general principle is that **the smaller a function is, the more likely it can be reused**. We're not aiming for a small function, but reusability is important.  
 
-![](resources/images/07.png)
+![Extract Function](images/07.png)
 
 Note that function is the most important building block in most languages, so please pay more attention to the size and meaning of functions. Once you spot an oversized function, try to break it down with `Extract Function`.
 
@@ -144,7 +143,7 @@ Note that function is the most important building block in most languages, so pl
 
 In WebStorm, if you press `option + enter`, some context-related suggestions will pop up. For example, if an `if-else` is short and straightforward enough, I prefer to use a ternary operator to replace them.
 
-![](resources/images/08.png)
+![Replace `if-else` with `?`](images/08.png)
 
 In WebStorm, `option + enter` often give you great options when you not sure what's to optimise. I also use it to fix the auto import when it complains that some constants, types or functions are not defined or to fix incompatible type issues.
 
@@ -152,7 +151,7 @@ In WebStorm, `option + enter` often give you great options when you not sure wha
 
 Let's do the `Extract Function` one more time by pressing `command + option + M` to put the index calculation out as a separate function. It seems there is some pattern about to emerge once we have the `getIndex`, isn't it?
 
-![](resources/images/09.png)
+![Extract Function](images/09.png)
 
 Even in some cases, it may seem unnecessary to create a new function, but it is worth doing it as, in many cases, once you extract a new one, some duplications would appear like magic. And the worst case is that you can always inline the extracted logic back by pressing `command + option + n` in WebStorm.
 
@@ -160,7 +159,7 @@ Even in some cases, it may seem unnecessary to create a new function, but it is 
 
 Extract Parameter often happens during a big refactoring inside a function. When you need an internal state to be passed in from the outside world, and you don’t want to use a global constant at that point, you can extract a parameter first and then in the calling place, pass in a variable (could be a global constant).
 
-![](resources/images/10.png)
+![Extract Parameter](images/10.png)
 
 Here we extract an optional parameter with `command + option + P` first with a default value, so it will not break any existing code. Then we can check all the call sites and fix them.
 
@@ -168,13 +167,13 @@ Here we extract an optional parameter with `command + option + P` first with a d
 
 It seems the `13` here is not really meaningful, so let's `command + option + c` to give it a better name. Note you can use a family of shortcuts to extract constant `command + option + C`, extract variable `command + option + v`, extract parameter `command + option + p` and extract method (function) `command + option + m`.
 
-![](resources/images/11.png)
+![Extract Constant](images/11.png)
 
 ### Slide Statements
 
 We then would slide this constant up to the variable definition area for the next move.
 
-![](resources/images/12.png)
+![Slide Statements](images/12.png)
 
 As we mentioned earlier, you not only can slide one statement but also a couple of statements, a block or a function. Select the block, and `command + shift + up/down`.
 
@@ -194,13 +193,13 @@ export const shift = 13;
 
 Into file `constants.ts`, and then in file `convert.ts` we reference these constants:
 
-![](resources/images/13.png)
+![Move Fields Into Constants.ts](images/13.png)
 
 ### Function to Arrow function
 
 The arrow function should be your default choice now. It's more compact and clear once you get used to it. I only use a traditional function declaration in very few cases, like a React function name that displayName matters.
 
-![](resources/images/14.png)
+![Arrow function](images/14.png)
 
 This can be done by `option + enter`. WebStorm will show you a couple of great suggestions. And in this case, **convert to variable holding arrow function** would do the work.
 
@@ -213,7 +212,7 @@ For example
 - Use `dict.length` to replace hardcode 26
 - Use mod operation `%` to get a new index when it is out of `dict` bound
 
-![](resources/images/15.png)
+![Simplify Logic](images/15.png)
 
 And when we run all the tests again, it should not surprise us at all.
 
@@ -221,7 +220,7 @@ And when we run all the tests again, it should not surprise us at all.
 
 One more thing, if I may, is to rename `shift` to `offset` as I feel it sounds more natural in the context. You can do this by `Shift + F6` when the caret is on `shift`, which will automatically update the constants defined in another file.
 
-![](resources/images/16.png)
+![Rename Variable](images/16.png)
 
 ## Summary
 
